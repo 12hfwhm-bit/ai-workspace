@@ -1,0 +1,26 @@
+{
+  "name": "ai-digital-workspace-server",
+  "version": "1.0.0",
+  "description": "AI 企业数字化工作台 - 后端服务",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js",
+    "seed": "node migrations/seed.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.2.0",
+    "mysql2": "^3.22.5",
+    "openai": "^6.45.0",
+    "pdf-parse": "^2.4.5"
+  }
+}
