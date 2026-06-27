@@ -35,7 +35,19 @@ app.get('/api/health', (_req, res) => {
 app.use(errorHandler)
 
 // ─── 启动 ───────────────────────────────
-app.listen(config.port, () => {
-  console.log(`[Server] 后端服务已启动 → http://localhost:${config.port}`)
-  console.log(`[Server] API 基础路径 → http://localhost:${config.port}/api`)
-})
+const { ensureUserSchema } = require('./migrations/ensureSchema')
+
+async function start() {
+  try {
+    await ensureUserSchema()
+  } catch (err) {
+    console.error('[Schema] 数据库结构校验失败:', err.message)
+  }
+
+  app.listen(config.port, () => {
+    console.log(`[Server] 后端服务已启动 → http://localhost:${config.port}`)
+    console.log(`[Server] API 基础路径 → http://localhost:${config.port}/api`)
+  })
+}
+
+start()

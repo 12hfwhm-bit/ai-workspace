@@ -15,9 +15,11 @@ async function getUsers(req, res, next) {
   try {
     if (!checkAdmin(req)) return deny(res)
     const pool = getPool()
-    const [rows] = await pool.query('SELECT id, username, role, status, create_time FROM user ORDER BY id')
+    const [rows] = await pool.query('SELECT id, username, role, status, create_time FROM `user` ORDER BY id')
     res.json(success(rows))
-  } catch (err) { next(err) }
+  } catch (err) {
+    next(err)
+  }
 }
 
 async function updateUserRole(req, res, next) {
@@ -27,7 +29,7 @@ async function updateUserRole(req, res, next) {
     const { role } = req.body
     if (!role || !['admin','user'].includes(role)) return res.status(400).json(fail(40002, '角色无效'))
     const pool = getPool()
-    await pool.query('UPDATE user SET role = ? WHERE id = ?', [role, id])
+    await pool.query('UPDATE `user` SET role = ? WHERE id = ?', [role, id])
     res.json(success(null, '角色更新成功'))
   } catch (err) { next(err) }
 }
@@ -39,7 +41,7 @@ async function toggleUserStatus(req, res, next) {
     const { status } = req.body
     if (status !== 0 && status !== 1) return res.status(400).json(fail(40002, '状态值无效'))
     const pool = getPool()
-    await pool.query('UPDATE user SET status = ? WHERE id = ?', [status, id])
+    await pool.query('UPDATE `user` SET status = ? WHERE id = ?', [status, id])
     res.json(success(null, status === 1 ? '用户已启用' : '用户已禁用'))
   } catch (err) { next(err) }
 }

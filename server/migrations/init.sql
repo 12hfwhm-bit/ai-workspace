@@ -75,9 +75,9 @@ CREATE TABLE IF NOT EXISTS `ai_history` (
   INDEX `idx_type` (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT IGNORE INTO `user` (`id`, `username`, `password`, `role`) VALUES
-(1, 'admin', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'admin'),
-(2, 'user', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'user');
+INSERT IGNORE INTO `user` (`id`, `username`, `password`, `role`, `status`) VALUES
+(1, 'admin', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'admin', 1),
+(2, 'user', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'user', 1);
 
 -- 插入测试客户数据
 INSERT IGNORE INTO `customer` (`id`, `name`, `phone`, `company`, `status`, `owner_id`) VALUES

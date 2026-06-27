@@ -36,7 +36,15 @@ import type { UserItem } from '@/api/settings'
 const users = ref<UserItem[]>([])
 onMounted(() => fetchUsers())
 
-async function fetchUsers() { try { const r = await getUsers(); users.value = r.data } catch {} }
+async function fetchUsers() { 
+  try { 
+    const r = await getUsers(); 
+    users.value = r.data 
+  } catch (err) {
+    console.error('获取用户失败:', err);
+    ElMessage.error('获取用户数据失败');
+  } 
+}
 async function changeRole(id: number, role: string) {
   try { await updateUserRole(id, role); ElMessage.success('角色已更新'); fetchUsers() } catch { ElMessage.error('更新失败') }
 }

@@ -37,9 +37,12 @@
       <div class="page-card">
         <h3 class="section-title">待办事项</h3>
         <div class="task-grid">
-          <div v-for="task in s.todoItems" :key="task.id" class="task-card" :style="{ borderLeftColor: task.color }" @click="router.push(task.link)">
+          <div v-for="task in s.todoItems" :key="task.id" class="task-card" :style="{ borderLeftColor: task.color }"
+            @click="router.push(task.link)">
             <div class="task-card__header">
-              <el-icon :size="18" :color="task.color"><component :is="iconMap[task.iconName]" /></el-icon>
+              <el-icon :size="18" :color="task.color">
+                <component :is="iconMap[task.iconName]" />
+              </el-icon>
               <span class="task-card__title">{{ task.title }}</span>
             </div>
             <div class="task-card__value" :style="{ color: task.color }">{{ task.count }}</div>
@@ -49,7 +52,9 @@
         <h3 class="section-title" style="margin-top:20px">快捷操作</h3>
         <div class="quick-grid">
           <div v-for="act in quickActions" :key="act.label" class="quick-item" @click="router.push(act.link)">
-            <el-icon :size="22" :color="act.color"><component :is="act.icon" /></el-icon>
+            <el-icon :size="22" :color="act.color">
+              <component :is="act.icon" />
+            </el-icon>
             <span>{{ act.label }}</span>
           </div>
         </div>
@@ -105,17 +110,17 @@ const quickActions = [
   { label: 'AI 分析', link: '/ai/analyze', icon: DataAnalysis, color: '#f56c6c' },
 ]
 
-const statusLabel: Record<string,string> = { pending:'未开始', in_progress:'进行中', completed:'已完成' }
-const statusColor: Record<string,string> = { pending:'#e6a23c', in_progress:'#409eff', completed:'#67c23a' }
+const statusLabel: Record<string, string> = { pending: '未开始', in_progress: '进行中', completed: '已完成' }
+const statusColor: Record<string, string> = { pending: '#e6a23c', in_progress: '#409eff', completed: '#67c23a' }
 
 const growthOption = computed<EChartsOption>(() => {
   const d = s.customerTrend
   if (!d.length) return {}
   return {
-    tooltip:{trigger:'axis'}, grid:{left:40,right:20,top:20,bottom:30},
-    xAxis:{type:'category',data:d.map(i=>i.month.slice(5)),axisLine:{lineStyle:{color:'#e0e0e0'}},axisLabel:{color:'#909399',fontSize:12}},
-    yAxis:{type:'value',splitLine:{lineStyle:{color:'#f5f5f5',type:'dashed'}},axisLabel:{color:'#909399',fontSize:12}},
-    series:[{type:'line',data:d.map(i=>i.count),smooth:true,symbol:'circle',symbolSize:8,lineStyle:{width:3,color:'#409eff'},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(64,158,255,0.25)'},{offset:1,color:'rgba(64,158,255,0.02)'}]}},itemStyle:{color:'#409eff'}}],
+    tooltip: { trigger: 'axis' }, grid: { left: 40, right: 20, top: 20, bottom: 30 },
+    xAxis: { type: 'category', data: d.map(i => i.month.slice(5)), axisLine: { lineStyle: { color: '#e0e0e0' } }, axisLabel: { color: '#909399', fontSize: 12 } },
+    yAxis: { type: 'value', splitLine: { lineStyle: { color: '#f5f5f5', type: 'dashed' } }, axisLabel: { color: '#909399', fontSize: 12 } },
+    series: [{ type: 'line', data: d.map(i => i.count), smooth: true, symbol: 'circle', symbolSize: 8, lineStyle: { width: 3, color: '#409eff' }, areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: 'rgba(64,158,255,0.25)' }, { offset: 1, color: 'rgba(64,158,255,0.02)' }] } }, itemStyle: { color: '#409eff' } }],
   }
 })
 
@@ -123,32 +128,156 @@ const projectOption = computed<EChartsOption>(() => {
   const d = s.projectStatusStats
   if (!d.length) return {}
   return {
-    tooltip:{trigger:'item',formatter:'{b}: {c} ({d}%)'},
-    series:[{type:'pie',radius:['48%','70%'],itemStyle:{borderRadius:6,borderColor:'#fff',borderWidth:2},label:{show:true,position:'outside',formatter:'{b}\\n{d}%',color:'#606266',fontSize:12},data:d.map(i=>({name:statusLabel[i.status]||i.status,value:i.count})),color:d.map(i=>statusColor[i.status]||'#909399')}],
+    tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+    series: [{ type: 'pie', radius: ['48%', '70%'], itemStyle: { borderRadius: 6, borderColor: '#fff', borderWidth: 2 }, label: { show: true, position: 'outside', formatter: '{b} {d}%', color: '#606266', fontSize: 12 }, data: d.map(i => ({ name: statusLabel[i.status] || i.status, value: i.count })), color: d.map(i => statusColor[i.status] || '#909399') }],
   }
 })
 </script>
 
 <style scoped>
-.dashboard { max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-.charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.chart-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-.chart-card__title { font-size: 15px; font-weight: 600; margin-bottom: 16px; color: #303133; }
-.bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.page-card { background: #fff; border-radius: 12px; padding: 20px 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-.section-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; color: #303133; }
-.activity-list { margin-top: 4px; }
+.dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
-.task-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-.task-card { background: #fafafa; border-radius: 10px; padding: 14px 16px; border-left: 3px solid; cursor: pointer; transition: box-shadow 0.2s; }
-.task-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-.task-card__header { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
-.task-card__title { font-size: 13px; color: #606266; }
-.task-card__value { font-size: 24px; font-weight: 700; line-height: 1.2; }
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
 
-.quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
-.quick-item { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 8px; background: #fafafa; border-radius: 10px; cursor: pointer; transition: box-shadow 0.2s; }
-.quick-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-.quick-item span { font-size: 12px; color: #606266; white-space: nowrap; }
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.chart-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.chart-card__title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #303133;
+}
+
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.page-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.section-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #303133;
+}
+
+.activity-list {
+  margin-top: 4px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.activity-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.activity-list::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 3px;
+}
+
+.activity-list::-webkit-scrollbar-thumb {
+  background: #d0d0d0;
+  border-radius: 3px;
+}
+
+.activity-list::-webkit-scrollbar-thumb:hover {
+  background: #b0b0b0;
+}
+
+.task-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.task-card {
+  background: #fafafa;
+  border-radius: 10px;
+  padding: 14px 16px;
+  border-left: 3px solid;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.task-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.task-card__header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.task-card__title {
+  font-size: 13px;
+  color: #606266;
+}
+
+.task-card__value {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.quick-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 8px;
+  background: #fafafa;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.quick-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.quick-item span {
+  font-size: 12px;
+  color: #606266;
+  white-space: nowrap;
+}
 </style>

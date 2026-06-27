@@ -56,7 +56,7 @@ async function register(req, res) {
 
     const hashedPassword = bcrypt.hashSync(password, 10)
     const [result] = await pool.query(
-      'INSERT INTO user (username, password, role) VALUES (?, ?, ?)',
+      'INSERT INTO user (username, password, role, status) VALUES (?, ?, ?, 1)',
       [username, hashedPassword, 'user']
     )
 

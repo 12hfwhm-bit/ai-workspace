@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿<template>
+﻿﻿﻿﻿<template>
   <div class="sidebar" :class="{ collapsed: appStore.sidebarCollapsed }">
     <div class="logo-area">
       <el-icon :size="24" color="#409eff">
